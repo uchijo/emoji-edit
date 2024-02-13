@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import { Button, Card, Container, Grid, Text } from "@mantine/core";
 import { SimplePool, Event } from "nostr-tools";
+import { EmojiSet } from "@/model/emojiSet";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -67,12 +68,22 @@ export default function Home() {
                   })
                 );
               }
-              const awaitedEvents = await Promise.all(results);
+              const awaitedEvents = (await Promise.all(results)).flat();
               console.dir(awaitedEvents);
-              const tags = awaitedEvents.flat().map((elem) => {
-                const emojis = elem.tags.filter((tag) => tag[0] === "emoji");
-                return emojis
-              }).flat();
+              const parsed = awaitedEvents
+                .filter((elem) => elem.kind === 30030)
+                .map((elem) => EmojiSet.from30030(elem));
+              console.dir(parsed);
+              console.log(
+                "============= raw manipulation results below ============="
+              );
+              const tags = awaitedEvents
+                .flat()
+                .map((elem) => {
+                  const emojis = elem.tags.filter((tag) => tag[0] === "emoji");
+                  return emojis;
+                })
+                .flat();
               console.dir(tags);
             }}
           >
