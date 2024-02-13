@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { Card, Container, Grid, Text } from "@mantine/core";
+import { Button, Card, Container, Grid, Text } from "@mantine/core";
+import { SimplePool, Event } from "nostr-tools";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,68 @@ export default function Home() {
       </Head>
       <main>
         <Container>
+          <Button
+            onClick={async () => {
+              if (!window.nostr) {
+                console.log("nip-07 is not installed.");
+              }
+              const pubkey = await window.nostr?.getPublicKey();
+              if (!pubkey) {
+                console.log("pubkey was undefined.");
+                return;
+              }
+
+              if (!window.nostr?.getRelays) {
+                console.log("relays are not set in nip-07 extension");
+                return;
+              }
+              const relays = await window.nostr!.getRelays!();
+              const readabbleRelays: string[] = [];
+              const writableRelays: string[] = [];
+              for (let relayName in relays) {
+                if (relays[relayName].read) {
+                  readabbleRelays.push(relayName);
+                }
+                if (relays[relayName].write) {
+                  writableRelays.push(relayName);
+                }
+              }
+
+              const pool = new SimplePool();
+              const result = await pool.querySync(readabbleRelays, {
+                authors: [pubkey],
+                kinds: [10030],
+              });
+              console.dir(result[0]);
+              console.dir(result[0].tags);
+
+              const results: Promise<Event[]>[] = [];
+              for (let tag of result[0].tags) {
+                const splitted = tag[1].split(":");
+                const kind = splitted[0];
+                if (kind != "30030") {
+                  continue;
+                }
+                const author = splitted[1];
+                const dTag = splitted[2];
+                results.push(
+                  pool.querySync([tag[2]], {
+                    kinds: [30030],
+                    authors: [author],
+                  })
+                );
+              }
+              const awaitedEvents = await Promise.all(results);
+              console.dir(awaitedEvents);
+              const tags = awaitedEvents.flat().map((elem) => {
+                const emojis = elem.tags.filter((tag) => tag[0] === "emoji");
+                return emojis
+              }).flat();
+              console.dir(tags);
+            }}
+          >
+            load my favorite emojis
+          </Button>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Text>hello there</Text>
           </Card>
