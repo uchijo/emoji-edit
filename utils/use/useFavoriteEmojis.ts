@@ -1,9 +1,9 @@
-import { EmojiSetAlias } from "@/model/emojiSetAlias"
+import { EmojiSetAlias } from "@/model/emoji/emojiSetAlias"
 import { SimplePool } from "nostr-tools"
 import { useEffect, useState } from "react"
 import { getPubKey } from "../getPubKey"
 import { getRelays } from "../getRelays"
-import { EmojiSet } from "@/model/emojiSet"
+import { EmojiSet } from "@/model/emoji/emojiSet"
 
 export type useFavoriteEmojisResult = {
     data: EmojiSet[] | undefined;
@@ -23,7 +23,6 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
             try {
                 // nip-07を待つ
                 await delay(1000);
-                console.log('hogehoge~')
                 const pubkey = await getPubKey();
 
                 const { readableRelays } = await getRelays();
@@ -34,8 +33,6 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
                     authors: [pubkey],
                     kinds: [10030],
                 });
-                console.dir(result[0]);
-                console.dir(result[0].tags);
 
                 const emojiSetRefs = result[0].tags.map((elem) =>
                     EmojiSetAlias.fromATag(elem)
@@ -45,7 +42,6 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
                 );
                 const emojiSetList = await Promise.all(emojiSetPromiseList);
                 setData(emojiSetList);
-                console.log('setData called.')
             } catch (e) {
                 if (e instanceof Error) {
                     setError(e)

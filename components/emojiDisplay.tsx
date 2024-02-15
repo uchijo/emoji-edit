@@ -1,4 +1,4 @@
-import { Emoji } from "@/model/emoji";
+import { Emoji } from "@/model/emoji/emoji";
 import { Stack, Text, Card, HoverCard } from "@mantine/core";
 import React from "react";
 import { Image } from "@mantine/core";

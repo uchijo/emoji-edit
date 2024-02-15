@@ -1,8 +1,19 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { Card, Container, Grid, Group, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Flex,
+  Group,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
+import { Emoji } from "@/model/emoji/emoji";
+import { GridModel } from "@/model/grid/grid";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,10 +34,33 @@ export default function Home() {
             グリッド上で絵文字をポチポチして投稿を作成できるツールです。
             <br />
             現状では縦:横が1:1の絵文字にのみ対応しており、それ以外を使うとバグります。
+            <br />
+            NIP-07にリレーと秘密鍵が登録してある状態でのみ使用可能です。
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>編集</Title>
-            hoge
+            <Box
+              style={{
+                display: "flex",
+              }}
+            >
+              <Button
+                onClick={() => {
+                  const emoji1 = new Emoji("shortcode1", "example.com/1");
+                  const emoji2 = new Emoji("shortcode2", "example.com/2");
+                  const emoji3 = new Emoji("shortcode3", "example.com/3");
+                  const grid = new GridModel(2, 3);
+                  grid.setAt(0, 0, emoji1);
+                  grid.setAt(1, 0, emoji2);
+                  grid.setAt(0, 1, emoji3);
+                  grid.addColumn(0);
+                  grid.addRow(0);
+                  console.dir(grid);
+                }}
+              >
+                hogehoge
+              </Button>
+            </Box>
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>プレビュー</Title>
