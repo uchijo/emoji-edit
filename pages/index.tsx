@@ -82,9 +82,7 @@ export default function Home() {
             <CanvasGrid grid={grid} setGrid={setGrid} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3} mb={10}>
-              プレビュー
-            </Title>
+            <Title order={3} mb={10}>プレビュー</Title>
             <Preview grid={grid} />
           </Card>
           {data == undefined ? (

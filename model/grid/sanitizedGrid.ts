@@ -16,6 +16,14 @@ export class SanitizedGrid {
         return new SanitizedGrid(rows)
     }
 
+    removeEmptyToRight() {
+        for (let i = 0; i < this.grid.length; i++) {
+            for (let ii = this.grid[i].length - 1; !this.grid[i][ii].hasEmoji; ii--) {
+                this.grid[i].length -= 1
+            }
+        }
+    }
+
     toShortCode(): string {
         let retval = ""
         for (const row of this.grid) {

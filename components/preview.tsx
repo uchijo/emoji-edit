@@ -10,6 +10,7 @@ export const Preview: React.FC<props> = ({ grid }) => {
   if (!sanitized) {
     return <></>;
   }
+  sanitized.removeEmptyToRight();
   const urlArray = sanitized.toUrls();
   return (
     <Box>
