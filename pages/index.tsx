@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import {
   Box,
   Button,
@@ -15,29 +14,18 @@ import { Emoji } from "@/model/emoji/emoji";
 import { GridModel } from "@/model/grid/grid";
 import { GridCellModel } from "@/model/grid/gridCell";
 import { useState } from "react";
-import { CanvasRow } from "@/components/canvasRow";
 import { CanvasGrid } from "@/components/canvasGrid";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const emoji1 = new Emoji(
     "shortcode1",
     "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/kami.png"
   );
-  const emoji2 = new Emoji(
-    "shortcode2",
-    "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/nazo.png"
-  );
-  const emoji3 = new Emoji(
-    "shortcode3",
-    "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/igyo.png"
-  );
   const cell1 = new GridCellModel();
   cell1.setEmoji(emoji1);
 
   const { error, data, isLoading } = useFavoriteEmojis();
-  const [grid, setGrid] = useState<GridModel>(GridModel.fromSize(2, 2));
+  const [grid, setGrid] = useState<GridModel>(GridModel.fromSize(10, 7));
 
   return (
     <>
@@ -67,13 +55,6 @@ export default function Home() {
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>編集</Title>
-            <Button
-              onClick={() => {
-                setGrid(grid.setAt(0, 0, emoji1));
-              }}
-            >
-              hogehoge
-            </Button>
             <Box
               style={{
                 display: "flex",
@@ -108,7 +89,18 @@ export default function Home() {
                       <EmojiDisplay
                         emoji={elem}
                         key={`${elem.url}${elem.shortcode}`}
-                        onClick={() => console.log(elem.shortcode)}
+                        onClick={() => {
+                          if (!grid.currentFocus) {
+                            return;
+                          }
+                          setGrid(
+                            grid.setAt(
+                              grid.currentFocus.x,
+                              grid.currentFocus.y,
+                              elem
+                            )
+                          );
+                        }}
                       />
                     ))}
                   </Group>

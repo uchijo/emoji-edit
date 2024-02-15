@@ -1,13 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import {
-  Text,
-  HoverCard,
-  Box,
-  Center,
-  Image,
-  Button,
-  Stack,
-} from "@mantine/core";
+import { Text, HoverCard, Box, Center, Image, Button } from "@mantine/core";
 import { GridModel } from "@/model/grid/grid";
 
 type props = {
@@ -46,23 +38,14 @@ export const CanvasCell: React.FC<props> = ({ grid, x, y, setGrid }) => {
           </Center>
         </HoverCard.Target>
         <HoverCard.Dropdown>
-          <Stack>
-            <Button
-              onClick={() => {
-                setGrid(grid.setFocus(x, y));
-              }}
-            >
-              セルを選択
-            </Button>
-            <Button
-              color="gray"
-              onClick={() => {
-                setGrid(grid.unsetAt(x, y));
-              }}
-            >
-              空白に戻す
-            </Button>
-          </Stack>
+          <Button
+            color="gray"
+            onClick={() => {
+              setGrid(grid.unsetAt(x, y));
+            }}
+          >
+            空白に戻す
+          </Button>
         </HoverCard.Dropdown>
       </HoverCard>
     </Box>
