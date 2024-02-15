@@ -37,11 +37,15 @@ export default function Home() {
                   padding="lg"
                   radius="md"
                   withBorder
-                  key={list.title}
+                  key={`${list.title}${list.author}`}
                 >
                   <Group>
                     {list.emojiList.map((elem) => (
-                      <EmojiDisplay emoji={elem} key={elem.url} />
+                      <EmojiDisplay
+                        emoji={elem}
+                        key={`${elem.url}${elem.shortcode}`}
+                        onClick={() => console.log(elem.shortcode)}
+                      />
                     ))}
                   </Group>
                 </Card>
