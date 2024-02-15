@@ -50,12 +50,20 @@ export default function Home() {
       <main>
         <Container>
           <Title order={2}>絵文字コネコネ</Title>
-          <Text>
+          <Text my={5}>
             グリッド上で絵文字をポチポチして投稿を作成できるツールです。
             <br />
             現状では縦:横が1:1の絵文字にのみ対応しており、それ以外を使うとバグります。
             <br />
             NIP-07にリレーと秘密鍵が登録してある状態でのみ使用可能です。
+          </Text>
+          <Text my={5}>
+            設定したいセルにカーソルを合わせると選択やリセットなどのメニューが出てきます。
+            セルを選択した上で、ページ下に表示されるお気に入り絵文字をクリックすることで、グリッドに絵文字を設定可能です。
+            <br />
+            eと表示されているセルは空白判定で、青いセルが現在選択中のセルです。
+            <br />
+            空白は勝手に保管されます。
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>編集</Title>
@@ -71,7 +79,7 @@ export default function Home() {
                 display: "flex",
               }}
             ></Box>
-            <CanvasGrid grid={grid} />
+            <CanvasGrid grid={grid} setGrid={setGrid} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>プレビュー</Title>

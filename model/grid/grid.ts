@@ -1,4 +1,5 @@
 import { Emoji } from "../emoji/emoji";
+import { Coordinate } from "./coordinate";
 import { GridCellModel } from "./gridCell";
 import { GridRowModel } from "./gridRow";
 
@@ -16,6 +17,7 @@ export class GridModel {
     }
 
     private _rows: GridRowModel[]
+    currentFocus?: Coordinate
 
     get sizeX(): number {
         return this._rows.length
@@ -29,6 +31,13 @@ export class GridModel {
         return this._rows
     }
 
+    setFocus(x: number, y: number): GridModel {
+        const newGrid = new GridModel(this._rows)
+        const coordinate = new Coordinate(x, y)
+        newGrid.currentFocus = coordinate
+        return newGrid
+    }
+
     rowAt(index: number): GridRowModel {
         return this._rows[index]
     }
@@ -38,8 +47,9 @@ export class GridModel {
         return new GridModel(this._rows)
     }
 
-    unsetAt(x: number, y: number) {
+    unsetAt(x: number, y: number): GridModel {
         this._rows[y].unsetAt(x)
+        return new GridModel(this._rows)
     }
 
     addRow(index: number) {

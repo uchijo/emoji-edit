@@ -1,17 +1,20 @@
-import { GridCellModel } from "@/model/grid/gridCell";
-import { GridRowModel } from "@/model/grid/gridRow";
-import { Flex, Group } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { CanvasCell } from "./canvasCell";
+import { GridModel } from "@/model/grid/grid";
+import { Dispatch, SetStateAction } from "react";
 
 type props = {
-  row: GridRowModel;
+  grid: GridModel;
+  setGrid: Dispatch<SetStateAction<GridModel>>;
+  y: number; // 座標
 };
 
-export const CanvasRow: React.FC<props> = ({ row }) => {
+export const CanvasRow: React.FC<props> = ({ grid, setGrid, y }) => {
+  const row = grid.rowAt(y);
   return (
     <Flex>
-      {row.cells.map((elem, index) => (
-        <CanvasCell cell={elem} key={index} />
+      {row.cells.map((_, index) => (
+        <CanvasCell grid={grid} x={index} y={y} setGrid={setGrid} key={index} />
       ))}
     </Flex>
   );

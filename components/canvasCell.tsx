@@ -1,22 +1,37 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
-  Stack,
   Text,
-  Card,
   HoverCard,
   Box,
   Center,
   Image,
+  Button,
+  Stack,
 } from "@mantine/core";
-import { GridCellModel } from "@/model/grid/gridCell";
+import { GridModel } from "@/model/grid/grid";
 
 type props = {
-  cell: GridCellModel;
+  grid: GridModel;
+  x: number;
+  y: number;
+  setGrid: Dispatch<SetStateAction<GridModel>>;
 };
 
-export const CanvasCell: React.FC<props> = ({ cell }) => {
+export const CanvasCell: React.FC<props> = ({ grid, x, y, setGrid }) => {
+  const cell = grid.cellAt(x, y);
+  const focused = grid.currentFocus?.sameFromCoord(x, y) ?? false;
+
   return (
-    <Box h="32px" w="32px" bg="cyan" m="3px">
+    <Box
+      h="32px"
+      w="32px"
+      bg={focused ? "cyan" : ""}
+      m="3px"
+      style={{ border: "solid 1px" }}
+      onClick={() => {
+        setGrid(grid.setFocus(x, y));
+      }}
+    >
       <HoverCard closeDelay={0}>
         <HoverCard.Target>
           <Center>
@@ -31,7 +46,23 @@ export const CanvasCell: React.FC<props> = ({ cell }) => {
           </Center>
         </HoverCard.Target>
         <HoverCard.Dropdown>
-          <Text>hi there</Text>
+          <Stack>
+            <Button
+              onClick={() => {
+                setGrid(grid.setFocus(x, y));
+              }}
+            >
+              セルを選択
+            </Button>
+            <Button
+              color="gray"
+              onClick={() => {
+                setGrid(grid.unsetAt(x, y));
+              }}
+            >
+              空白に戻す
+            </Button>
+          </Stack>
         </HoverCard.Dropdown>
       </HoverCard>
     </Box>
