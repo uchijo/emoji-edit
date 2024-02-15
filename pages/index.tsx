@@ -1,10 +1,6 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { Button, Card, Container, Grid, Group, Text } from "@mantine/core";
-import { SimplePool, Event } from "nostr-tools";
-import { EmojiSetAlias } from "@/model/emojiSetAlias";
-import { getPubKey } from "@/utils/getPubKey";
-import { getRelays } from "@/utils/getRelays";
+import { Card, Container, Grid, Group, Text, Title } from "@mantine/core";
 import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
 
@@ -22,6 +18,18 @@ export default function Home() {
       </Head>
       <main>
         <Container>
+          <Grid>
+            <Grid.Col span={6}>
+              <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
+                hoge
+              </Card>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
+                hoge
+              </Card>
+            </Grid.Col>
+          </Grid>
           {data == undefined ? (
             error !== undefined ? (
               <Text>エラー発生！</Text>
@@ -39,7 +47,8 @@ export default function Home() {
                   withBorder
                   key={`${list.title}${list.author}`}
                 >
-                  <Group>
+                  <Title order={5}>{list.title ?? list.identifier}</Title>
+                  <Group mt="sm">
                     {list.emojiList.map((elem) => (
                       <EmojiDisplay
                         emoji={elem}
