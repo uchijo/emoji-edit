@@ -25,8 +25,17 @@ export class GridModel {
         return this._rows[0].length
     }
 
-    setAt(x: number, y: number, emoji: Emoji) {
+    get rows(): GridRowModel[] {
+        return this._rows
+    }
+
+    rowAt(index: number): GridRowModel {
+        return this._rows[index]
+    }
+
+    setAt(x: number, y: number, emoji: Emoji): GridModel {
         this._rows[y].setAt(x, emoji)
+        return new GridModel(this._rows)
     }
 
     unsetAt(x: number, y: number) {

@@ -14,6 +14,9 @@ export class GridRowModel {
     get length(): number {
         return this._cells.length
     }
+    get cells(): GridCellModel[] {
+        return this._cells
+    }
 
     // cells = [e, e, e, e, e]とする
     // index=0の場合, cells = [n, e, e, e, e, e]

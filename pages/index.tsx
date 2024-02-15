@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Container,
-  Flex,
   Group,
   Text,
   Title,
@@ -14,9 +13,10 @@ import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
 import { Emoji } from "@/model/emoji/emoji";
 import { GridModel } from "@/model/grid/grid";
-import { CanvasCell } from "@/components/canvasCell";
 import { GridCellModel } from "@/model/grid/gridCell";
 import { useState } from "react";
+import { CanvasRow } from "@/components/canvasRow";
+import { CanvasGrid } from "@/components/canvasGrid";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,15 +61,7 @@ export default function Home() {
             <Title order={3}>編集</Title>
             <Button
               onClick={() => {
-                const grid = GridModel.fromSize(2, 3);
-                grid.setAt(0, 0, emoji1);
-                grid.setAt(1, 0, emoji2);
-                grid.setAt(0, 1, emoji3);
-                grid.addColumn(0);
-                grid.addRow(0);
-                console.dir(grid);
-                grid.setAt(0, 0, emoji1);
-                setGrid(grid);
+                setGrid(grid.setAt(0, 0, emoji1));
               }}
             >
               hogehoge
@@ -79,7 +71,7 @@ export default function Home() {
                 display: "flex",
               }}
             ></Box>
-            <CanvasCell cell={grid.cellAt(0, 0)} />
+            <CanvasGrid grid={grid} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>プレビュー</Title>

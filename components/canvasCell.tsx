@@ -17,7 +17,7 @@ type props = {
 export const CanvasCell: React.FC<props> = ({ cell }) => {
   return (
     <Box h="32px" w="32px" bg="cyan" m="3px">
-      <HoverCard>
+      <HoverCard closeDelay={0}>
         <HoverCard.Target>
           <Center>
             {cell.hasEmoji ? (
