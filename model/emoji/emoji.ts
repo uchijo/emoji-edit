@@ -15,4 +15,8 @@ export class Emoji {
         emoji.containedSetId = containedSetId
         return emoji
     }
+
+    toTag(): string[] {
+        return ["emoji", this.shortcode, this.url]
+    }
 }

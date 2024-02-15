@@ -15,4 +15,16 @@ export class GridCellModel {
     unsetEmoji() {
         this.currentEmoji = undefined
     }
+
+    toShortCode(): string {
+        return `:${this.currentEmoji?.shortcode ?? "empty"}:`
+    }
+
+    extractTagWithoutDuplicate(seenAlready: Set<String>): string[] | undefined {
+        const shortcode = this.toShortCode()
+        if (seenAlready.has(shortcode)) {
+            return undefined
+        }
+        return this.currentEmoji?.toTag()
+    }
 }

@@ -15,6 +15,7 @@ import { GridModel } from "@/model/grid/grid";
 import { GridCellModel } from "@/model/grid/gridCell";
 import { useState } from "react";
 import { CanvasGrid } from "@/components/canvasGrid";
+import { Preview } from "@/components/preview";
 
 export default function Home() {
   const emoji1 = new Emoji(
@@ -48,6 +49,8 @@ export default function Home() {
             const sanitized = grid.toSanitizedGrid();
             console.log("sanitized:");
             console.dir(sanitized);
+            console.log(sanitized?.toShortCode());
+            console.log(sanitized?.toTags());
           }}
         >
           test
@@ -79,8 +82,10 @@ export default function Home() {
             <CanvasGrid grid={grid} setGrid={setGrid} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3}>プレビュー</Title>
-            hoge
+            <Title order={3} mb={10}>
+              プレビュー
+            </Title>
+            <Preview grid={grid} />
           </Card>
           {data == undefined ? (
             error !== undefined ? (

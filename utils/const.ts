@@ -1,0 +1,2 @@
+export const emptyTag = ["emoji", "empty", "https://raw.githubusercontent.com/uchijo/my-emoji/main/general/empty.png"]
+export const emptyUrl = "https://raw.githubusercontent.com/uchijo/my-emoji/main/general/empty.png"
