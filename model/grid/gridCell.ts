@@ -5,7 +5,7 @@ export class GridCellModel {
     currentEmoji?: Emoji
 
     get hasEmoji(): boolean {
-        return this.currentEmoji === undefined
+        return this.currentEmoji !== undefined
     }
 
     setEmoji(emoji: Emoji) {

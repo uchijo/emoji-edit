@@ -1,14 +1,20 @@
 import { Emoji } from "../emoji/emoji";
+import { GridCellModel } from "./gridCell";
 import { GridRowModel } from "./gridRow";
 
 export class GridModel {
-    constructor(x: number, y: number) {
+    private constructor(rows: GridRowModel[]) {
+        this._rows = rows
+    }
+
+    static fromSize(x: number, y: number): GridModel {
         const rows: GridRowModel[] = []
         for (let i = 0; i < y; i++) {
             rows.push(new GridRowModel(x))
         }
-        this._rows = rows
+        return new GridModel(rows)
     }
+
     private _rows: GridRowModel[]
 
     get sizeX(): number {
@@ -51,5 +57,9 @@ export class GridModel {
         for (let i = 0; i < this.sizeY; i++) {
             this._rows[i].removeAt(index)
         }
+    }
+
+    cellAt(x: number, y: number): GridCellModel {
+        return this._rows[y].emojiAt(x)
     }
 }

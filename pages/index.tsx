@@ -14,11 +14,31 @@ import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
 import { Emoji } from "@/model/emoji/emoji";
 import { GridModel } from "@/model/grid/grid";
+import { CanvasCell } from "@/components/canvasCell";
+import { GridCellModel } from "@/model/grid/gridCell";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const emoji1 = new Emoji(
+    "shortcode1",
+    "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/kami.png"
+  );
+  const emoji2 = new Emoji(
+    "shortcode2",
+    "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/nazo.png"
+  );
+  const emoji3 = new Emoji(
+    "shortcode3",
+    "https://raw.githubusercontent.com/Lokuyow/Lokuyow.github.io/main/images/nostr/emoji/igyo.png"
+  );
+  const cell1 = new GridCellModel();
+  cell1.setEmoji(emoji1);
+
   const { error, data, isLoading } = useFavoriteEmojis();
+  const [grid, setGrid] = useState<GridModel>(GridModel.fromSize(2, 2));
+
   return (
     <>
       <Head>
@@ -39,28 +59,27 @@ export default function Home() {
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>編集</Title>
+            <Button
+              onClick={() => {
+                const grid = GridModel.fromSize(2, 3);
+                grid.setAt(0, 0, emoji1);
+                grid.setAt(1, 0, emoji2);
+                grid.setAt(0, 1, emoji3);
+                grid.addColumn(0);
+                grid.addRow(0);
+                console.dir(grid);
+                grid.setAt(0, 0, emoji1);
+                setGrid(grid);
+              }}
+            >
+              hogehoge
+            </Button>
             <Box
               style={{
                 display: "flex",
               }}
-            >
-              <Button
-                onClick={() => {
-                  const emoji1 = new Emoji("shortcode1", "example.com/1");
-                  const emoji2 = new Emoji("shortcode2", "example.com/2");
-                  const emoji3 = new Emoji("shortcode3", "example.com/3");
-                  const grid = new GridModel(2, 3);
-                  grid.setAt(0, 0, emoji1);
-                  grid.setAt(1, 0, emoji2);
-                  grid.setAt(0, 1, emoji3);
-                  grid.addColumn(0);
-                  grid.addRow(0);
-                  console.dir(grid);
-                }}
-              >
-                hogehoge
-              </Button>
-            </Box>
+            ></Box>
+            <CanvasCell cell={grid.cellAt(0, 0)} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>プレビュー</Title>
