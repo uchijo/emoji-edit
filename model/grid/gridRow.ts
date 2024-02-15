@@ -2,20 +2,32 @@ import { Emoji } from "../emoji/emoji";
 import { GridCellModel } from "./gridCell";
 
 export class GridRowModel {
-    constructor(size: number) {
+    constructor(cells: GridCellModel[]) {
+        this._cells = cells
+    }
+    private _cells: GridCellModel[]
+
+    static fromSize(size: number): GridRowModel {
         const cells = []
         for (let i = 0; i < size; i++) {
             cells.push(new GridCellModel())
         }
-        this._cells = cells
+        return new GridRowModel(cells)
     }
-    private _cells: GridCellModel[]
 
     get length(): number {
         return this._cells.length
     }
     get cells(): GridCellModel[] {
         return this._cells
+    }
+
+    get isEmptyRow(): boolean {
+        return this._cells.every((elem) => !elem.hasEmoji)
+    }
+
+    clone(): GridRowModel {
+        return new GridRowModel([...this._cells])
     }
 
     // cells = [e, e, e, e, e]とする

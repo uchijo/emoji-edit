@@ -36,6 +36,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Button
+          onClick={() => {
+            // let cloned = grid.clone();
+            // console.dir(cloned);
+            // console.dir(`sizeX: ${cloned.sizeX}`);
+            // cloned = cloned.removeColumn(cloned.sizeX - 1);
+            // console.dir(cloned);
+            // console.dir(`sizeX: ${cloned.sizeX}`);
+            // console.log(`is empty: ${cloned.isEmptyColumn(cloned.sizeX - 1)}`)
+            const sanitized = grid.toSanitizedGrid();
+            console.log("sanitized:");
+            console.dir(sanitized);
+          }}
+        >
+          test
+        </Button>
         <Container>
           <Title order={2}>絵文字コネコネ</Title>
           <Text my={5}>
@@ -49,9 +65,9 @@ export default function Home() {
             設定したいセルにカーソルを合わせると選択やリセットなどのメニューが出てきます。
             セルを選択した上で、ページ下に表示されるお気に入り絵文字をクリックすることで、グリッドに絵文字を設定可能です。
             <br />
-            eと表示されているセルは空白判定で、青いセルが現在選択中のセルです。
+            eと表示されているセルは空白になっているセルで、青いセルが現在選択中のセルです。
             <br />
-            空白は勝手に保管されます。
+            空白は勝手に補完されるので、左側に透明な絵文字を入れる必要はありません。
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3}>編集</Title>
