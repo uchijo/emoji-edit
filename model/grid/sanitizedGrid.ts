@@ -32,6 +32,7 @@ export class SanitizedGrid {
             }
             retval += "\n"
         }
+        retval.trimEnd();
         return retval
     }
 

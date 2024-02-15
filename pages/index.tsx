@@ -16,6 +16,8 @@ import { GridCellModel } from "@/model/grid/gridCell";
 import { useState } from "react";
 import { CanvasGrid } from "@/components/canvasGrid";
 import { Preview } from "@/components/preview";
+import { PostButton } from "@/components/postButton";
+import { SimplePool } from "nostr-tools";
 
 export default function Home() {
   const emoji1 = new Emoji(
@@ -24,8 +26,9 @@ export default function Home() {
   );
   const cell1 = new GridCellModel();
   cell1.setEmoji(emoji1);
+  const [pool] = useState(new SimplePool());
 
-  const { error, data, isLoading } = useFavoriteEmojis();
+  const { error, data, isLoading } = useFavoriteEmojis(pool);
   const [grid, setGrid] = useState<GridModel>(GridModel.fromSize(10, 7));
 
   return (
@@ -73,7 +76,9 @@ export default function Home() {
             空白は勝手に補完されるので、左側に透明な絵文字を入れる必要はありません。
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3}>編集</Title>
+            <Title order={3} mb={10}>
+              編集
+            </Title>
             <Box
               style={{
                 display: "flex",
@@ -82,8 +87,11 @@ export default function Home() {
             <CanvasGrid grid={grid} setGrid={setGrid} />
           </Card>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-            <Title order={3} mb={10}>プレビュー</Title>
+            <Title order={3} mb={10}>
+              プレビュー
+            </Title>
             <Preview grid={grid} />
+            <PostButton grid={grid} pool={pool} />
           </Card>
           {data == undefined ? (
             error !== undefined ? (

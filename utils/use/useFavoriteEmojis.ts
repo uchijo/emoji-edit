@@ -13,7 +13,7 @@ export type useFavoriteEmojisResult = {
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
+export const useFavoriteEmojis = (pool: SimplePool): useFavoriteEmojisResult => {
     const [data, setData] = useState<EmojiSet[] | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | undefined>(undefined);
@@ -26,8 +26,6 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
                 const pubkey = await getPubKey();
 
                 const { readableRelays } = await getRelays();
-
-                const pool = new SimplePool()
 
                 const result = await pool.querySync(readableRelays, {
                     authors: [pubkey],
