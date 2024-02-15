@@ -18,6 +18,8 @@ import { CanvasGrid } from "@/components/canvasGrid";
 import { Preview } from "@/components/preview";
 import { PostButton } from "@/components/postButton";
 import { SimplePool } from "nostr-tools";
+import Link from "next/link";
+import { CopyShortCodeButton } from "@/components/copyShortCodeButton";
 
 export default function Home() {
   const emoji1 = new Emoji(
@@ -40,24 +42,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Button
-          onClick={() => {
-            // let cloned = grid.clone();
-            // console.dir(cloned);
-            // console.dir(`sizeX: ${cloned.sizeX}`);
-            // cloned = cloned.removeColumn(cloned.sizeX - 1);
-            // console.dir(cloned);
-            // console.dir(`sizeX: ${cloned.sizeX}`);
-            // console.log(`is empty: ${cloned.isEmptyColumn(cloned.sizeX - 1)}`)
-            const sanitized = grid.toSanitizedGrid();
-            console.log("sanitized:");
-            console.dir(sanitized);
-            console.log(sanitized?.toShortCode());
-            console.log(sanitized?.toTags());
-          }}
-        >
-          test
-        </Button>
         <Container>
           <Title order={2}>絵文字コネコネ</Title>
           <Text my={5}>
@@ -74,6 +58,11 @@ export default function Home() {
             eと表示されているセルは空白になっているセルで、青いセルが現在選択中のセルです。
             <br />
             空白は勝手に補完されるので、左側に透明な絵文字を入れる必要はありません。
+            <br />
+            <Link href="https://emojito.meme/a/naddr1qq2k2mt0df5j6etyd96z6etdwp68jtt0dek8jqgdwaehxw309ahx7uewd3hkcq3quchj055pfgj3w8zxd5khvy4drgrxmvfk9d8zt8d4cpm0ne4jrjmsxpqqqp65u8jqpxz">
+              この絵文字セット
+            </Link>
+            に含まれる:empty:を利用しているので、shortcodeをコピペしてnoStrudel等から投稿する場合はブックマークが必要かもしれません。
           </Text>
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3} mb={10}>
@@ -91,7 +80,7 @@ export default function Home() {
               プレビュー
             </Title>
             <Preview grid={grid} />
-            <PostButton grid={grid} pool={pool} />
+            <CopyShortCodeButton grid={grid} />
           </Card>
           {data == undefined ? (
             error !== undefined ? (

@@ -20,8 +20,13 @@ export class SanitizedGrid {
         for (let i = 0; i < this.grid.length; i++) {
             for (let ii = this.grid[i].length - 1; !this.grid[i][ii].hasEmoji; ii--) {
                 this.grid[i].length -= 1
+                console.log(`hoge: ${ii}`)
+                if (ii == 0) {
+                    break;
+                }
             }
         }
+        console.dir(this)
     }
 
     toShortCode(): string {
