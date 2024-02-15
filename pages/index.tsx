@@ -18,18 +18,20 @@ export default function Home() {
       </Head>
       <main>
         <Container>
-          <Grid>
-            <Grid.Col span={6}>
-              <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-                hoge
-              </Card>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
-                hoge
-              </Card>
-            </Grid.Col>
-          </Grid>
+          <Title order={2}>絵文字コネコネ</Title>
+          <Text>
+            グリッド上で絵文字をポチポチして投稿を作成できるツールです。
+            <br />
+            現状では縦:横が1:1の絵文字にのみ対応しており、それ以外を使うとバグります。
+          </Text>
+          <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
+            <Title order={3}>編集</Title>
+            hoge
+          </Card>
+          <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
+            <Title order={3}>プレビュー</Title>
+            hoge
+          </Card>
           {data == undefined ? (
             error !== undefined ? (
               <Text>エラー発生！</Text>
