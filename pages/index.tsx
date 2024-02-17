@@ -1,5 +1,13 @@
 import Head from "next/head";
-import { Box, Card, Container, Group, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Card,
+  Container,
+  Group,
+  ScrollArea,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
 import { Emoji } from "@/model/emoji/emoji";
@@ -80,44 +88,46 @@ export default function Home() {
 
           {data == undefined ? (
             error !== undefined ? (
-              <Text>エラー発生！</Text>
+              <Text>エラー発生！{error.message}</Text>
             ) : (
               <Text>読込中</Text>
             )
           ) : (
             <>
-              {data!.map((list) => (
-                <Card
-                  my="lg"
-                  shadow="sm"
-                  padding="lg"
-                  radius="md"
-                  withBorder
-                  key={`${list.title}${list.author}`}
-                >
-                  <Title order={5}>{list.title ?? list.identifier}</Title>
-                  <Group mt="sm">
-                    {list.emojiList.map((elem) => (
-                      <EmojiDisplay
-                        emoji={elem}
-                        key={`${elem.url}${elem.shortcode}`}
-                        onClick={() => {
-                          if (!grid.currentFocus) {
-                            return;
-                          }
-                          setGrid(
-                            grid.setAt(
-                              grid.currentFocus.x,
-                              grid.currentFocus.y,
-                              elem
-                            )
-                          );
-                        }}
-                      />
-                    ))}
-                  </Group>
-                </Card>
-              ))}
+              <ScrollArea h={500}>
+                {data!.map((list) => (
+                  <Card
+                    my="lg"
+                    shadow="sm"
+                    padding="lg"
+                    radius="md"
+                    withBorder
+                    key={`${list.title}${list.author}`}
+                  >
+                    <Title order={5}>{list.title ?? list.identifier}</Title>
+                    <Group mt="sm">
+                      {list.emojiList.map((elem) => (
+                        <EmojiDisplay
+                          emoji={elem}
+                          key={`${elem.url}${elem.shortcode}`}
+                          onClick={() => {
+                            if (!grid.currentFocus) {
+                              return;
+                            }
+                            setGrid(
+                              grid.setAt(
+                                grid.currentFocus.x,
+                                grid.currentFocus.y,
+                                elem
+                              )
+                            );
+                          }}
+                        />
+                      ))}
+                    </Group>
+                  </Card>
+                ))}
+              </ScrollArea>
             </>
           )}
         </Container>
