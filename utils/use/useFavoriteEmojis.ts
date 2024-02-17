@@ -5,6 +5,7 @@ import { EmojiSet } from "@/model/emoji/emojiSet"
 import { usePool } from "./usePool"
 import { delay } from "../delay"
 import { getRelays } from "./useRelays"
+import { Emoji } from "@/model/emoji/emoji"
 
 export type useFavoriteEmojisResult = {
     data: EmojiSet[] | undefined;
@@ -36,13 +37,26 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
                     throw Error("failed to fetch 10030 event")
                 }
 
-                const emojiSetRefs = result.tags.map((elem) =>
-                    EmojiSetAlias.fromATag(elem)
-                );
+                // aタグではなくemojiタグが入っていた場合に拾う用
+                const emojiTags: Emoji[] = []
+                const emojiSetRefs = result.tags.map((elem) => {
+                    if (elem[0] == "a") {
+                        return EmojiSetAlias.fromATag(elem)
+                    }
+                    if (elem[0] == "emoji") {
+                        const emoji = Emoji.fromEmojiTag(elem)
+                        emojiTags.push(emoji)
+                    }
+                    return undefined
+                }).filter((elem): elem is EmojiSetAlias => elem !== undefined);
                 const emojiSetPromiseList = emojiSetRefs.map((elem) =>
                     elem.fetchEmojiSet(pool, readableRelays)
                 );
+
                 const emojiSetList = await Promise.all(emojiSetPromiseList);
+
+                // 生のemojiタグを集めたものをEmojiSetとして登録
+                emojiSetList.push(new EmojiSet(emojiTags, 'thisEmojiSetDoesNotHaveAuthor', 'raw emoji tags'))
                 setData(emojiSetList);
             } catch (e) {
                 if (e instanceof Error) {
