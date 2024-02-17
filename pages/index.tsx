@@ -127,6 +127,7 @@ export default function Home() {
                     </Group>
                   </Card>
                 ))}
+                <Box h={400} />
               </ScrollArea>
             </>
           )}
