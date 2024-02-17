@@ -89,7 +89,20 @@ export class GridModel {
             }
         }
 
-        return SanitizedGrid.fromGridModel(tmp)
+        const sanitized = SanitizedGrid.fromGridModel(tmp)
+
+        // 右側の必要ない空白を消す
+        for (let i = 0; i < sanitized.grid.length; i++) {
+            for (let ii = sanitized.grid[i].length - 1; !sanitized.grid[i][ii].hasEmoji; ii--) {
+                sanitized.grid[i].length -= 1
+                console.log(`hoge: ${ii}`)
+                if (ii == 0) {
+                    break;
+                }
+            }
+        }
+
+        return sanitized;
     }
 
     isEmptyColumn(index: number): boolean {

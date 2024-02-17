@@ -11,7 +11,6 @@ export const CopyShortCodeButton: React.FC<props> = ({ grid }) => {
       my="sm"
       onClick={() => {
         const sanitized = grid.toSanitizedGrid();
-        sanitized?.removeEmptyToRight();
         navigator.clipboard
           .writeText(sanitized?.toShortCode() ?? "")
           .then(() => alert("copied"));

@@ -14,7 +14,6 @@ export const PostButton: React.FC<props> = ({ grid }) => {
   if (!sanitized) {
     return <></>;
   }
-  sanitized.removeEmptyToRight();
 
   return (
     <Button
