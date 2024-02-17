@@ -1,17 +1,16 @@
 import { EmojiSetAlias } from "@/model/emoji/emojiSetAlias"
 import { useEffect, useState } from "react"
 import { getPubKey } from "../getPubKey"
-import { getRelays } from "../getRelays"
 import { EmojiSet } from "@/model/emoji/emojiSet"
 import { usePool } from "./usePool"
+import { delay } from "../delay"
+import { getRelays } from "./useRelays"
 
 export type useFavoriteEmojisResult = {
     data: EmojiSet[] | undefined;
     isLoading: boolean;
     error?: Error;
 }
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
     const [data, setData] = useState<EmojiSet[] | undefined>(undefined);
@@ -26,7 +25,7 @@ export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
                 await delay(1000);
                 const pubkey = await getPubKey();
 
-                const { readableRelays } = await getRelays();
+                const { readableRelays } = await getRelays(pool);
 
                 const result = await pool.get(readableRelays, {
                     authors: [pubkey],

@@ -1,7 +1,7 @@
 import { GridModel } from "@/model/grid/grid";
 import { getPubKey } from "@/utils/getPubKey";
-import { getRelays } from "@/utils/getRelays";
 import { usePool } from "@/utils/use/usePool";
+import { getRelays } from "@/utils/use/useRelays";
 import { Button } from "@mantine/core";
 
 type props = {
@@ -21,7 +21,7 @@ export const PostButton: React.FC<props> = ({ grid }) => {
       my={10}
       onClick={async () => {
         const pubkey = await getPubKey();
-        const relays = await getRelays();
+        const relays = await getRelays(pool);
         const toBeSigned = {
           kind: 1,
           created_at: Math.floor(Date.now() / 1000),
