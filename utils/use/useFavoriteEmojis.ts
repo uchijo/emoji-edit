@@ -1,9 +1,9 @@
 import { EmojiSetAlias } from "@/model/emoji/emojiSetAlias"
-import { SimplePool } from "nostr-tools"
 import { useEffect, useState } from "react"
 import { getPubKey } from "../getPubKey"
 import { getRelays } from "../getRelays"
 import { EmojiSet } from "@/model/emoji/emojiSet"
+import { usePool } from "./usePool"
 
 export type useFavoriteEmojisResult = {
     data: EmojiSet[] | undefined;
@@ -13,10 +13,11 @@ export type useFavoriteEmojisResult = {
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const useFavoriteEmojis = (pool: SimplePool): useFavoriteEmojisResult => {
+export const useFavoriteEmojis = (): useFavoriteEmojisResult => {
     const [data, setData] = useState<EmojiSet[] | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | undefined>(undefined);
+    const pool = usePool();
 
     useEffect(() => {
         (async () => {
@@ -27,12 +28,16 @@ export const useFavoriteEmojis = (pool: SimplePool): useFavoriteEmojisResult => 
 
                 const { readableRelays } = await getRelays();
 
-                const result = await pool.querySync(readableRelays, {
+                const result = await pool.get(readableRelays, {
                     authors: [pubkey],
                     kinds: [10030],
-                });
+                })
 
-                const emojiSetRefs = result[0].tags.map((elem) =>
+                if (!result) {
+                    throw Error("failed to fetch 10030 event")
+                }
+
+                const emojiSetRefs = result.tags.map((elem) =>
                     EmojiSetAlias.fromATag(elem)
                 );
                 const emojiSetPromiseList = emojiSetRefs.map((elem) =>

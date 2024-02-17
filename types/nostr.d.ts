@@ -11,11 +11,21 @@ export type NostrEvent = {
     created_at: number;
 };
 
+export type SignedNostrEvent = {
+    id: string;
+    kind: number;
+    tags: string[][];
+    pubkey: string;
+    content: string;
+    created_at: number;
+    sig: string;
+};
+
 type NostrAPI = {
     /** returns a public key as hex */
     getPublicKey(): Promise<string>;
     /** takes an event object, adds `id`, `pubkey` and `sig` and returns it */
-    signEvent(event: NostrEvent): Promise<NostrEvent>;
+    signEvent(event: NostrEvent): Promise<SignedNostrEvent>;
 
     // Optional
 

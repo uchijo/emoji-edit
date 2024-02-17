@@ -40,7 +40,10 @@ export class EmojiSetAlias {
 
     async fetchEmojiSet(pool: SimplePool, defaultRelays: string[]): Promise<EmojiSet> {
         const relays = this.savedRelayUrl !== undefined ? [this.savedRelayUrl!] : defaultRelays;
-        const emojiSetEvents = await pool.querySync(relays, { kinds: [this.kind], authors: [this.author] })
+        const emojiSetEvents = await pool.list(relays, [{ kinds: [this.kind], authors: [this.author] }])
+        if (!emojiSetEvents) {
+            throw Error("event not found")
+        }
         const targetEvent = emojiSetEvents.find((elem) => {
             const dTag = elem.tags.find((tag) => tag[0] == "d");
             if (!dTag) {

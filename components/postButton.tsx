@@ -1,16 +1,16 @@
 import { GridModel } from "@/model/grid/grid";
 import { getPubKey } from "@/utils/getPubKey";
 import { getRelays } from "@/utils/getRelays";
+import { usePool } from "@/utils/use/usePool";
 import { Button } from "@mantine/core";
-import { SimplePool } from "nostr-tools";
 
 type props = {
   grid: GridModel;
-  pool: SimplePool;
 };
 
-export const PostButton: React.FC<props> = ({ grid, pool }) => {
+export const PostButton: React.FC<props> = ({ grid }) => {
   const sanitized = grid.toSanitizedGrid();
+  const pool = usePool();
   if (!sanitized) {
     return <></>;
   }
@@ -19,21 +19,22 @@ export const PostButton: React.FC<props> = ({ grid, pool }) => {
   return (
     <Button
       my={10}
-      // onClick={async () => {
-      //   const pubkey = await getPubKey();
-      //   const relays = await getRelays();
-      //   const toBeSigned = {
-      //     kind: 1,
-      //     created_at: Math.floor(Date.now() / 1000),
-      //     tags: sanitized.toTags(),
-      //     content: sanitized.toShortCode(),
-      //   };
-      //   const signed = await window.nostr?.signEvent(toBeSigned);
-      //   if (!signed) {
-      //     return;
-      //   }
-      //   pool.publish(relays.writableRelays, signed);
-      // }}
+      onClick={async () => {
+        const pubkey = await getPubKey();
+        const relays = await getRelays();
+        const toBeSigned = {
+          kind: 1,
+          created_at: Math.floor(Date.now() / 1000),
+          tags: sanitized.toTags(),
+          content: sanitized.toShortCode(),
+          pubkey: pubkey,
+        };
+        const signed = await window.nostr?.signEvent(toBeSigned);
+        if (!signed) {
+          return;
+        }
+        pool.publish(relays.writableRelays, signed);
+      }}
     >
       kind1で投稿する
     </Button>

@@ -1,13 +1,5 @@
 import Head from "next/head";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Group,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Card, Container, Group, Text, Title } from "@mantine/core";
 import { useFavoriteEmojis } from "@/utils/use/useFavoriteEmojis";
 import { EmojiDisplay } from "@/components/emojiDisplay";
 import { Emoji } from "@/model/emoji/emoji";
@@ -17,7 +9,6 @@ import { useState } from "react";
 import { CanvasGrid } from "@/components/canvasGrid";
 import { Preview } from "@/components/preview";
 import { PostButton } from "@/components/postButton";
-import { SimplePool } from "nostr-tools";
 import Link from "next/link";
 import { CopyShortCodeButton } from "@/components/copyShortCodeButton";
 
@@ -28,9 +19,8 @@ export default function Home() {
   );
   const cell1 = new GridCellModel();
   cell1.setEmoji(emoji1);
-  const [pool] = useState(new SimplePool());
 
-  const { error, data, isLoading } = useFavoriteEmojis(pool);
+  const { error, data, isLoading } = useFavoriteEmojis();
   const [grid, setGrid] = useState<GridModel>(GridModel.fromSize(10, 7));
 
   return (
@@ -64,6 +54,7 @@ export default function Home() {
             </Link>
             に含まれる:empty:を利用しているので、shortcodeをコピペしてnoStrudel等から投稿する場合はブックマークが必要かもしれません。
           </Text>
+
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3} mb={10}>
               編集
@@ -75,13 +66,18 @@ export default function Home() {
             ></Box>
             <CanvasGrid grid={grid} setGrid={setGrid} />
           </Card>
+
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
             <Title order={3} mb={10}>
               プレビュー
             </Title>
             <Preview grid={grid} />
-            <CopyShortCodeButton grid={grid} />
+            <Group>
+              <CopyShortCodeButton grid={grid} />
+              <PostButton grid={grid} />
+            </Group>
           </Card>
+
           {data == undefined ? (
             error !== undefined ? (
               <Text>エラー発生！</Text>
