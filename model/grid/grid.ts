@@ -130,13 +130,13 @@ export class GridModel {
         return new GridModel(this._rows)
     }
 
-    addRow(index: number) {
+    addRow(index: number): GridModel {
         const newRows = [
             ...this._rows.slice(0, index),
             GridRowModel.fromSize(this.sizeX),
             ...this._rows.slice(index),
         ]
-        this._rows = newRows
+        return new GridModel(newRows)
     }
 
     removeRow(index: number): GridModel {
@@ -144,13 +144,14 @@ export class GridModel {
         return new GridModel(newRows)
     }
 
-    addColumn(index: number) {
+    addColumn(index: number): GridModel {
         for (let i = 0; i < this.sizeY; i++) {
             this._rows[i].addAt(index)
         }
+        return new GridModel(this._rows)
     }
 
-    removeColumn(index: number) {
+    removeColumn(index: number): GridModel {
         for (let i = 0; i < this.sizeY; i++) {
             this._rows[i].removeAt(index)
         }
