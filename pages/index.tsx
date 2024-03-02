@@ -1,6 +1,7 @@
 import Head from "next/head";
 import {
   Box,
+  Button,
   Card,
   Container,
   Group,
@@ -73,6 +74,12 @@ export default function Home() {
               }}
             ></Box>
             <CanvasGrid grid={grid} setGrid={setGrid} />
+
+            <Button my="sm" fullWidth={false} onClick={() => {
+              setGrid(GridModel.fromSize(grid.sizeX, grid.sizeY))
+            }}>
+              リセット
+            </Button>
           </Card>
 
           <Card my="lg" shadow="sm" padding="lg" radius="md" withBorder>
